@@ -1,4 +1,9 @@
+using CardStorageService.Data;
+using CardStorService.Models;
+using CardStorService.Services;
+using CardStorService.Services.impl;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 
 namespace CardStorService
@@ -10,9 +15,17 @@ namespace CardStorService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container
-            
-            
- 
+
+
+            #region Configure Options Services
+
+            builder.Services.Configure<DatabaseOptions>(options =>
+            {
+                builder.Configuration.GetSection("Settings:DatabaseOptions").Bind(options);
+            });
+
+            #endregion
+
             #region Logging Service
 
             //Настройка логгера - ограничения на вывод сообщения и ограничения размера файла
@@ -35,6 +48,21 @@ namespace CardStorService
 
             }).UseNLog(new NLogAspNetCoreOptions() { RemoveLoggerFactoryFilter = true });
 
+
+            #endregion
+
+            #region Configur EF DBContext Service (CardStorageService Database)
+
+            builder.Services.AddDbContext<CardStorageServiceDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["Settings:DatabaseOptions:ConnectionString"]);
+            });
+            #endregion
+
+            #region Configur Repository Services
+
+            builder.Services.AddScoped<IClientRepositoryService, ClientRepository>();
+            builder.Services.AddScoped<ICardRepositoryService, CardRepository>();
 
             #endregion
 
