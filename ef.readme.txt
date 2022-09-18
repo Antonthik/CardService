@@ -31,5 +31,10 @@ ASP.Net Core EF
 4. Добавить новые "entity classes"
 
 5. Теперь мы готовы создать свою первую миграцию. Откроем Package Manager Console => Default project => для Data проекта выполним команду
+    Add-Migration InitialMigration 
+    - после этой команды появляется миграционный класс,
+    который нужно запустить командой:
     
+    update-database
+
     Add-Migration InitialCreate
