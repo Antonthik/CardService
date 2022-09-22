@@ -38,3 +38,6 @@ ASP.Net Core EF
     update-database
 
     Add-Migration InitialCreate
+
+6.
+    Add-Migration AccountsAdded

@@ -15,6 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorageService.Data", "CardStorageService.Data\CardStorageService.Data.csproj", "{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtSampl", "JwtSampl\JwtSampl.csproj", "{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26AFCAD5-F34F-41EE-A6EF-6CD8BC4E01D6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordUtilsClient", "PasswordUtilsClient\PasswordUtilsClient.csproj", "{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +38,14 @@ Global
 		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
