@@ -3,12 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStorService", "CardStorService\CardStorService.csproj", "{90B7F6A4-E98B-42A5-8AF7-FF0D17E1707E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorService", "CardStorService\CardStorService.csproj", "{90B7F6A4-E98B-42A5-8AF7-FF0D17E1707E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38} = {557C5FFF-71FD-40AE-A4BC-9DA41897DB38}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{43FAA158-B30D-49DC-9CFD-66E28C285301}"
 	ProjectSection(SolutionItems) = preProject
 		ef.readme.txt = ef.readme.txt
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStorageService.Data", "CardStorageService.Data\CardStorageService.Data.csproj", "{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtSampl", "JwtSampl\JwtSampl.csproj", "{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26AFCAD5-F34F-41EE-A6EF-6CD8BC4E01D6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordUtilsClient", "PasswordUtilsClient\PasswordUtilsClient.csproj", "{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +34,18 @@ Global
 		{90B7F6A4-E98B-42A5-8AF7-FF0D17E1707E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90B7F6A4-E98B-42A5-8AF7-FF0D17E1707E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90B7F6A4-E98B-42A5-8AF7-FF0D17E1707E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{557C5FFF-71FD-40AE-A4BC-9DA41897DB38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E586EB0-34B5-4E8C-938A-7ACFB2B8D32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B644C6D9-BDDB-4048-AC9B-8A83F2E4EECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
