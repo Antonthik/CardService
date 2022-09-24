@@ -2,6 +2,7 @@
 
 namespace PasswordUtilsClient
 {
+    //Пример получения соли и токена из класса PasswordUtils
     internal class Program
     {
         static void Main(string[] args)

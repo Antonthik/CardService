@@ -2,9 +2,13 @@ using CardStorageService.Data;
 using CardStorService.Models;
 using CardStorService.Services;
 using CardStorService.Services.impl;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NLog.Web;
+using System.Text;
 
 namespace CardStorService
 {
@@ -67,11 +71,79 @@ namespace CardStorService
             #endregion
 
 
+            #region Configure JWT Tokens
+
+            //Добавили пакет для работы с токеном - работаем по схеме на предъявителя
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+            })
+             //Определяем параметры -   
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new
+                TokenValidationParameters //сервис валидации токена
+                {
+                    ValidateIssuerSigningKey = true,//передаем ключ
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthenticateService.SecretKey)),//кодируем секретный ключ
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            #endregion
+
+
+
+            #region Configure Services
+
+            builder.Services.AddSingleton<IAuthenticateService, AuthenticateService>();
+            //builder.Services.AddSingleton<AuthenticateService>();
+            #endregion
+
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();//24.09.2022 Первоначальный вариант без параметров закомментировали
+
+            //24.09.2022 Второй вариант - расширяем
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Мой сервис", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()//Добавляем в свагер секцию для хранения токена
+                {
+                    Description = "JWT Authorization header using the Bearer scheme(Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()//Добавляем в свагер - вызов каждого метода требует предъявления токена
+                                                                         //и берем из секции AddSecurityDefinition
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+            });
 
             var app = builder.Build();
 
@@ -82,6 +154,9 @@ namespace CardStorService
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();//24.09.2022 добавили с разделом #region Configure JWT Tokens 
+
+            app.UseAuthentication();//24.09.2022 добавили с разделом #region Configure JWT Tokens 
             app.UseAuthorization();
             app.UseHttpLogging(); //17.09.2022
 
