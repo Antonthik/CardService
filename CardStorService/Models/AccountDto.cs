@@ -1,6 +1,7 @@
 ﻿namespace CardStorService.Models
 {
     //Возвращаем поля пользователя,но те, которые считаем безопасными.
+    //Класс для возврата данных из БД
     public class AccountDto
     {
         public int AccountId { get; set; }

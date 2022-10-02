@@ -1,4 +1,6 @@
+using AutoMapper;
 using CardStorageService.Data;
+using CardStorService.Mappings;
 using CardStorService.Models;
 using CardStorService.Models.Requests;
 using CardStorService.Models.Validators;
@@ -31,6 +33,13 @@ namespace CardStorService
 
             #endregion
 
+            #region Configure Mapper
+            //Добавили маппинг
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MappingsProfile()));//создаем конфигурацию маппера
+            var mapper = mapperConfiguration.CreateMapper();//создаем маппер
+            builder.Services.AddSingleton(mapper);//регистрирум сервис
+
+            #endregion
 
             #region Configure Options Services
 

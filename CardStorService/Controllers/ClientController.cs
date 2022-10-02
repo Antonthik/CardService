@@ -1,4 +1,5 @@
-﻿using CardStorageService.Data;
+﻿using AutoMapper;
+using CardStorageService.Data;
 using CardStorService.Models.Requests;
 using CardStorService.Services;
 using FluentValidation;
@@ -19,6 +20,7 @@ namespace CardStorService.Controllers
         private readonly IClientRepositoryService _clientRepositoryService;
         private readonly ILogger<CardController> _logger;
         private readonly IValidator<CreateClientRequest> _createClientRequestValidator;//добавляем валидацию
+        private readonly IMapper _mapper;//добавляем маппинг
 
 
         #endregion
@@ -29,12 +31,13 @@ namespace CardStorService.Controllers
         public ClientController(
             ILogger<CardController> logger,
             IClientRepositoryService clientRepositoryService,
-             IValidator<CreateClientRequest> createClientRequestValidator)
+            IValidator<CreateClientRequest> createClientRequestValidator,
+            IMapper mapper)
         {
             _logger = logger;
             _clientRepositoryService = clientRepositoryService;
-
             _createClientRequestValidator = createClientRequestValidator;
+            _mapper = mapper;
         }
 
         #endregion
@@ -54,12 +57,13 @@ namespace CardStorService.Controllers
 
             try
             {
-                var clientId = _clientRepositoryService.Create(new Client
-                {
-                    FirstName = request.FirstName,
-                    Surname = request.Surname,
-                    Patronymic = request.Patronymic
-                });
+                //var clientId = _clientRepositoryService.Create(new Client
+                //{
+                //    FirstName = request.FirstName,
+                //    Surname = request.Surname,
+                //    Patronymic = request.Patronymic
+                //});
+                var clientId = _clientRepositoryService.Create(_mapper.Map<Client>(request));//добавляем маппинг
                 return Ok(new CreateClientResponse
                 {
                     ClientId = clientId

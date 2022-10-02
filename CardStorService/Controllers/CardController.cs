@@ -1,4 +1,5 @@
-﻿using CardStorageService.Data;
+﻿using AutoMapper;
+using CardStorageService.Data;
 using CardStorService.Models;
 using CardStorService.Models.Requests;
 using CardStorService.Services;
@@ -19,17 +20,20 @@ namespace CardStorService.Controllers
         private readonly ILogger<CardController> _logger;
         private readonly ICardRepositoryService _cardRepositoryService;
         private readonly IValidator<CreateCardRequest> _createCardRequestValidator;//добавляем валидацию
+        private readonly IMapper _mapper;//добавляем маппинг
 
         #endregion
 
         #region Constructor
         public CardController(ILogger<CardController> logger,
            ICardRepositoryService cardRepositoryService,
-           IValidator<CreateCardRequest> createCardRequestValidator)
+           IValidator<CreateCardRequest> createCardRequestValidator,
+           IMapper mapper)
         {
             _logger = logger;
             _cardRepositoryService = cardRepositoryService;
             _createCardRequestValidator = createCardRequestValidator;
+            _mapper = mapper;
         }
         #endregion
 
@@ -47,14 +51,15 @@ namespace CardStorService.Controllers
 
             try
             {
-                var cardId = _cardRepositoryService.Create(new Card
-                {
-                    ClientId = request.ClientId,
-                    CardNo = request.CardNo,
-                    Name = request.Name,//
-                    ExpDate = request.ExpDate,
-                    CVV2 = request.CVV2
-                });
+                //var cardId = _cardRepositoryService.Create(new Card
+                //{
+                //    ClientId = request.ClientId,
+                //    CardNo = request.CardNo,
+                //    Name = request.Name,//
+                //    ExpDate = request.ExpDate,
+                //    CVV2 = request.CVV2
+                //});
+                var cardId = _cardRepositoryService.Create(_mapper.Map<Card>(request));//добавляем маппинг
                 return Ok(new CreateCardResponse
                 {
                     CardId = cardId.ToString()
@@ -80,13 +85,14 @@ namespace CardStorService.Controllers
                 var cards = _cardRepositoryService.GetByClientId(clientId);
                 return Ok(new GetCardsResponse
                 {
-                    Cards = cards.Select(card => new CardDto
-                    {
-                        CardNo = card.CardNo,
-                        CVV2 = card.CVV2,
-                        Name = card.Name,
-                        ExpDate = card.ExpDate.ToString("MM/yy")
-                    }).ToList()
+                    Cards = _mapper.Map<List<CardDto>>(cards)
+                    ///Cards = cards.Select(card => new CardDto
+                    ///{
+                    ///    CardNo = card.CardNo,
+                    ///    CVV2 = card.CVV2,
+                    ///    Name = card.Name,
+                    ///    ExpDate = card.ExpDate.ToString("MM/yy")
+                    ///}).ToList()
                 });
             }
             catch (Exception e)

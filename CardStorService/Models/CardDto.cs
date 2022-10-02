@@ -1,5 +1,6 @@
 ﻿namespace CardStorService.Models
 {
+    //Класс для возврата данных из БД
     public class CardDto
     {
         public string CardNo { get; set; }
