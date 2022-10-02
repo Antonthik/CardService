@@ -1,7 +1,10 @@
 using CardStorageService.Data;
 using CardStorService.Models;
+using CardStorService.Models.Requests;
+using CardStorService.Models.Validators;
 using CardStorService.Services;
 using CardStorService.Services.impl;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +22,14 @@ namespace CardStorService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container
+
+            #region Configure FluentValidator
+
+            builder.Services.AddScoped<IValidator<AuthenticationRequest>, AuthenticationRequestValidator>();//добавляем валидацию
+            builder.Services.AddScoped<IValidator<CreateCardRequest>, CreateCardRequestValidator>();//добавляем валидацию
+            builder.Services.AddScoped<IValidator<CreateClientRequest>, CreateClientValidator>();//добавляем валидацию
+
+            #endregion
 
 
             #region Configure Options Services

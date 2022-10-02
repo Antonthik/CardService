@@ -2,6 +2,8 @@
 using CardStorService.Models;
 using CardStorService.Models.Requests;
 using CardStorService.Services;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +18,18 @@ namespace CardStorService.Controllers
         #region Service
         private readonly ILogger<CardController> _logger;
         private readonly ICardRepositoryService _cardRepositoryService;
+        private readonly IValidator<CreateCardRequest> _createCardRequestValidator;//добавляем валидацию
 
         #endregion
 
         #region Constructor
         public CardController(ILogger<CardController> logger,
-           ICardRepositoryService cardRepositoryService)
+           ICardRepositoryService cardRepositoryService,
+           IValidator<CreateCardRequest> createCardRequestValidator)
         {
             _logger = logger;
             _cardRepositoryService = cardRepositoryService;
+            _createCardRequestValidator = createCardRequestValidator;
         }
         #endregion
 
@@ -34,6 +39,12 @@ namespace CardStorService.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult Create([FromBody] CreateCardRequest request)
         {
+            //добавляем валидаци
+            //Получаем результат валидации из класс authenticationRequest
+            ValidationResult validationResult = _createCardRequestValidator.Validate(request);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.ToDictionary());//метод .ToDictionary() - передает описание ошибки
+
             try
             {
                 var cardId = _cardRepositoryService.Create(new Card

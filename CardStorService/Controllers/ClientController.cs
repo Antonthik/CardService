@@ -1,6 +1,8 @@
 ﻿using CardStorageService.Data;
 using CardStorService.Models.Requests;
 using CardStorService.Services;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,8 @@ namespace CardStorService.Controllers
 
         private readonly IClientRepositoryService _clientRepositoryService;
         private readonly ILogger<CardController> _logger;
+        private readonly IValidator<CreateClientRequest> _createClientRequestValidator;//добавляем валидацию
+
 
         #endregion
 
@@ -24,10 +28,13 @@ namespace CardStorService.Controllers
 
         public ClientController(
             ILogger<CardController> logger,
-            IClientRepositoryService clientRepositoryService)
+            IClientRepositoryService clientRepositoryService,
+             IValidator<CreateClientRequest> createClientRequestValidator)
         {
             _logger = logger;
             _clientRepositoryService = clientRepositoryService;
+
+            _createClientRequestValidator = createClientRequestValidator;
         }
 
         #endregion
@@ -38,6 +45,13 @@ namespace CardStorService.Controllers
         [ProducesResponseType(typeof(CreateClientResponse), StatusCodes.Status200OK)]
         public IActionResult Create([FromBody] CreateClientRequest request)
         {
+
+            //добавляем валидаци
+            //Получаем результат валидации из класс authenticationRequest
+            ValidationResult validationResult = _createClientRequestValidator.Validate(request);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.ToDictionary());//метод .ToDictionary() - передает описание ошибки
+
             try
             {
                 var clientId = _clientRepositoryService.Create(new Client
