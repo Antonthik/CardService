@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+//
+
+option csharp_namespace = "CardStorServiceProtos";
+
+//ќписание сервиса ClientService
+service ClientService {
+
+	rpc Create (CreateClientRequest) returns (CreateClientResponse);//метод принимает CreateClientRequest , а на выходе CreateClientResponse
+
+}
+
+//ќписание сервиса CardService
+
+service CardService {
+	rpc GetByClientId (GetByClientIdRequest) returns (GetByClientIdResponse);
+}
+
+//ќписываем сообщение на вход, аналог класса
+message CreateClientRequest{
+	//ќписание полей, каждое поле нумеруем - дл€ бинарного формата об€зательно нужно соблюдать очередность
+		string SurName = 1;
+		string FirstName = 2;
+		string Patronymic = 3;
+}
+
+//ќписываем сообщение на выход, аналог класса
+message CreateClientResponse{
+	//ќписание полей, каждое поле нумеруем 
+	int32 ClientId =  1;
+}
+
+
+message GetByClientIdRequest{
+	//ќписание полей, каждое поле нумеруем 
+	int32 ClientId =  1;
+}
+
+//ќписываем сообщение на выход, аналог класса
+message GetByClientIdResponse{
+	//ќписание полей, каждое поле нумеруем 
+	repeated Card Cards = 1;//на выходе должен быть список карт,используем repeated
+}
+
+//описали класс Card
+message Card{
+	//ќписание полей, каждое поле нумеруем 
+	string CardNo = 1;
+	string Name = 2;
+	string CVV2 = 3;
+	string ExpDate = 4;
+}
