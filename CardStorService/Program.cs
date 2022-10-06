@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
+using System.Net;
 using System.Text;
 
 namespace CardStorService
@@ -24,6 +25,21 @@ namespace CardStorService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container
+
+            #region Configure gRPC
+            //Обработка gRPC  06 / 10 / 22
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(IPAddress.Any, 5001, listenOptions =>
+                {
+                    listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+                });//Kestrel - web сервер
+            });//конфигурируем web сервер
+
+            builder.Services.AddGrpc();
+
+            #endregion
 
             #region Configure FluentValidator
 
@@ -178,7 +194,30 @@ namespace CardStorService
 
             app.UseAuthentication();//24.09.2022 добавили с разделом #region Configure JWT Tokens 
             app.UseAuthorization();
-            app.UseHttpLogging(); //17.09.2022
+
+            //app.UseHttpLogging(); //17.09.2022
+
+            //------------- Обработка gRPC  06/10/22-----------------
+
+            // MICROSOFT обещал поправить в .NET 7
+            app.UseWhen(c => c.Request.ContentType != "application/grpc",
+                builder =>
+                {
+                    builder.UseHttpLogging();
+                }
+            );
+
+          
+
+            // app.UseHttpLogging();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<ClientService>();
+                endpoints.MapGrpcService<CardService>();
+
+            });
+            //------------- Обработка gRPC  06/10/22 -----------------
 
             app.MapControllers();
 
